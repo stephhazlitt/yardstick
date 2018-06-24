@@ -187,7 +187,7 @@ mnLogLoss.data.frame  <-
     res <- y * as.matrix(data[, vars$probs])
     res[res <= .Machine$double.eps & res > 0] <- .Machine$double.eps
     pos_log <- function(x)
-      log(x[x != 0])
+      -log(x[x != 0])
     res <- sum(apply(res, 1, pos_log))
     if (!sum)
       res <- res / nrow(data)
