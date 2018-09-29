@@ -1,9 +1,12 @@
-context("Two-class metrics")
-
 library(testthat)
 library(yardstick)
 library(pROC)
 library(tidyselect)
+
+context("Two-class metrics")
+
+# reset to default
+options(yardstick.event_first = TRUE)
 
 ## data from: Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1:
 #'  sensitivity and specificity,'' *British Medical Journal*,
@@ -354,11 +357,11 @@ ll_dat <- data.frame(
 
 test_that('LogLoss', {
   expect_equal(
-    mnLogLoss(ll_dat, obs, LETTERS[1:3]),
+    mnLogLoss(ll_dat, obs, LETTERS[1:3])$.estimate,
     -(log(1) + log(.8) + log(.51) + log(.8) + log(.6) + log(.4))/6
   )
   expect_equal(
-    mnLogLoss(ll_dat, truth = "obs", A, B, C, sum = TRUE),
+    mnLogLoss(ll_dat, truth = "obs", A, B, C, sum = TRUE)$.estimate,
     -(log(1) + log(.8) + log(.51) + log(.8) + log(.6) + log(.4))
   )
 })
