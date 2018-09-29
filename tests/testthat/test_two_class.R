@@ -1,7 +1,8 @@
+context("Two-class metrics")
+
 library(testthat)
 library(yardstick)
 library(pROC)
-library(MLmetrics)
 library(tidyselect)
 
 ## data from: Altman, D.G., Bland, J.M. (1994) ``Diagnostic tests 1:
@@ -51,31 +52,31 @@ pred_ch <- quote(scan)
 
 test_that('sensitivity', {
   expect_equal(
-    sens(pathology, truth = "pathology", estimate = "scan"),
+    sens(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     231/258
   )
   expect_equal(
-    sens(pathology, estimate = scan, truth = pathology),
+    sens(pathology, estimate = scan, truth = pathology)[[".estimate"]],
     231/258
   )
   expect_equal(
-    sens(pathology, pathology, !! pred_ch),
+    sens(pathology, pathology, !! pred_ch)[[".estimate"]],
     231/258
   )
   expect_equal(
-    sens(pathology, pathology, scan),
+    sens(pathology, pathology, scan)[[".estimate"]],
     231/258
   )
   expect_equal(
-    sens(path_tbl),
+    sens(path_tbl)[[".estimate"]],
     231/258
   )
   expect_equal(
-    sens(pathology, truth = pathology, estimate = "scan_na"),
+    sens(pathology, truth = pathology, estimate = "scan_na")[[".estimate"]],
     230/256
   )
   expect_equal(
-    sens(as.matrix(path_tbl)),
+    sens(as.matrix(path_tbl))[[".estimate"]],
     231/258
   )
 })
@@ -83,19 +84,19 @@ test_that('sensitivity', {
 
 test_that('specificity', {
   expect_equal(
-    spec(pathology, truth = "pathology", estimate = "scan"),
+    spec(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     54/86
   )
   expect_equal(
-    spec(path_tbl),
+    spec(path_tbl)[[".estimate"]],
     54/86
   )
   expect_equal(
-    spec(pathology, truth = pathology, estimate = "scan_na"),
+    spec(pathology, truth = pathology, estimate = "scan_na")[[".estimate"]],
     53/85
   )
   expect_equal(
-    spec(as.matrix(path_tbl)),
+    spec(as.matrix(path_tbl))[[".estimate"]],
     54/86
   )
 })
@@ -103,22 +104,22 @@ test_that('specificity', {
 
 test_that('ppv', {
   expect_equal(
-    ppv(pathology, truth = "pathology", estimate = "scan"),
+    ppv(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     0.87832,
     tolerance = .001
   )
   expect_equal(
-    ppv(path_tbl),
+    ppv(path_tbl)[[".estimate"]],
     0.87832,
     tolerance = .001
   )
   expect_equal(
-    ppv(pathology, truth = pathology, estimate = "scan_na"),
+    ppv(pathology, truth = pathology, estimate = "scan_na")[[".estimate"]],
     0.87744,
     tolerance = .001
   )
   expect_equal(
-    ppv(pathology, truth = pathology, estimate = "scan", prevalence = .5),
+    ppv(pathology, truth = pathology, estimate = "scan", prevalence = .5)[[".estimate"]],
     0.70642,
     tolerance = .001
   )
@@ -126,22 +127,22 @@ test_that('ppv', {
 
 test_that('npv', {
   expect_equal(
-    npv(pathology, truth = "pathology", estimate = "scan"),
+    npv(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     2/3,
     tolerance = .001
   )
   expect_equal(
-    npv(path_tbl),
+    npv(path_tbl)[[".estimate"]],
     2/3,
     tolerance = .001
   )
   expect_equal(
-    npv(pathology, truth = pathology, estimate = "scan_na"),
+    npv(pathology, truth = pathology, estimate = "scan_na")[[".estimate"]],
     0.67088,
     tolerance = .001
   )
   expect_equal(
-    npv(pathology, truth = pathology, estimate = "scan", prevalence = .5),
+    npv(pathology, truth = pathology, estimate = "scan", prevalence = .5)[[".estimate"]],
     0.85714,
     tolerance = .001
   )
@@ -150,15 +151,15 @@ test_that('npv', {
 
 test_that('recall', {
   expect_equal(
-    recall(df_2_1, truth = "truth", estimate = "prediction"),
+    recall(df_2_1, truth = "truth", estimate = "prediction")[[".estimate"]],
     30/60
   )
   expect_equal(
-    recall(tbl_2_1),
+    recall(tbl_2_1)[[".estimate"]],
     30/60
   )
   expect_equal(
-    recall(df_2_1, truth = truth, estimate = pred_na),
+    recall(df_2_1, truth = truth, estimate = pred_na)[[".estimate"]],
     26/(26+29)
   )
 })
@@ -166,15 +167,15 @@ test_that('recall', {
 
 test_that('precision', {
   expect_equal(
-    precision(df_2_1, truth = "truth", estimate = "prediction"),
+    precision(df_2_1, truth = "truth", estimate = "prediction")[[".estimate"]],
     30/42
   )
   expect_equal(
-    precision(tbl_2_1),
+    precision(tbl_2_1)[[".estimate"]],
     30/42
   )
   expect_equal(
-    precision(df_2_1, truth = truth, estimate = pred_na),
+    precision(df_2_1, truth = truth, estimate = pred_na)[[".estimate"]],
     26/37
   )
 })
@@ -182,17 +183,17 @@ test_that('precision', {
 
 test_that('F1', {
   expect_equal(
-    f_meas(df_2_1, truth = "truth", estimate = "prediction"),
+    f_meas(df_2_1, truth = "truth", estimate = "prediction")[[".estimate"]],
     0.5882353,
     tol = 0.0001
   )
   expect_equal(
-    f_meas(tbl_2_1),
+    f_meas(tbl_2_1)[[".estimate"]],
     0.5882353,
     tol = 0.0001
   )
   expect_equal(
-    f_meas(df_2_1, truth = truth, estimate = pred_na),
+    f_meas(df_2_1, truth = truth, estimate = pred_na)[[".estimate"]],
     0.5652174,
     tol = 0.0001
   )
@@ -201,15 +202,15 @@ test_that('F1', {
 
 test_that('Matthews correlation coefficient', {
   expect_equal(
-    mcc(pathology, truth = "pathology", estimate = "scan"),
+    mcc(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     ((231 * 54) - (32 * 27)) / sqrt((231 + 32)*(231 + 27) * (54 + 32) * (54 + 27))
   )
   expect_equal(
-    mcc(path_tbl),
+    mcc(path_tbl)[[".estimate"]],
     ((231 * 54) - (32 * 27)) / sqrt((231 + 32)*(231 + 27) * (54 + 32) * (54 + 27))
   )
   expect_equal(
-    mcc(pathology, truth = pathology, estimate = scan_na),
+    mcc(pathology, truth = pathology, estimate = scan_na)[[".estimate"]],
     ((230 * 53) - (32 * 26)) / sqrt((230 + 32)*(230 + 26) * (53 + 32) * (53 + 26))
   )
 })
@@ -217,15 +218,15 @@ test_that('Matthews correlation coefficient', {
 
 test_that('Youden J', {
   expect_equal(
-    j_index(pathology, truth = "pathology", estimate = "scan"),
+    j_index(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     (231/258) + (54/86)  - 1
   )
   expect_equal(
-    j_index(path_tbl),
+    j_index(path_tbl)[[".estimate"]],
     (231/258) + (54/86)  - 1
   )
   expect_equal(
-    j_index(pathology, pathology, scan),
+    j_index(pathology, pathology, scan)[[".estimate"]],
     (231/258) + (54/86)  - 1
   )
 })
@@ -234,16 +235,16 @@ test_that('Youden J', {
 
 test_that('Balanced Accuracy', {
   expect_equal(
-    bal_accuracy(pathology, truth = "pathology", estimate = "scan"),
-    ( sens(path_tbl) + spec(path_tbl) )/2
+    bal_accuracy(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
+    ( sens(path_tbl)[[".estimate"]] + spec(path_tbl)[[".estimate"]] )/2
   )
   expect_equal(
-    bal_accuracy(path_tbl),
-    ( sens(path_tbl) + spec(path_tbl) )/2
+    bal_accuracy(path_tbl)[[".estimate"]],
+    ( sens(path_tbl)[[".estimate"]] + spec(path_tbl)[[".estimate"]] )/2
   )
   expect_equal(
-    bal_accuracy(pathology, pathology, scan),
-    ( sens(path_tbl) + spec(path_tbl) )/2
+    bal_accuracy(pathology, pathology, scan)[[".estimate"]],
+    ( sens(path_tbl)[[".estimate"]] + spec(path_tbl)[[".estimate"]] )/2
   )
 })
 
@@ -251,15 +252,15 @@ test_that('Balanced Accuracy', {
 
 test_that('Detection Prevalence', {
   expect_equal(
-    detection_prevalence(pathology, truth = "pathology", estimate = "scan"),
+    detection_prevalence(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     ( 231 + 32 ) / 344
   )
   expect_equal(
-    detection_prevalence(path_tbl),
+    detection_prevalence(path_tbl)[[".estimate"]],
     ( 231 + 32 ) / 344
   )
   expect_equal(
-    detection_prevalence(pathology, pathology, scan),
+    detection_prevalence(pathology, pathology, scan)[[".estimate"]],
     ( 231 + 32 ) / 344
   )
 })
@@ -278,19 +279,15 @@ smooth_curv <- pROC::roc(two_class_example$truth,
 
 test_that('ROC AUC', {
   expect_equal(
-    roc_auc(two_class_example, truth, Class1),
+    roc_auc(two_class_example, truth, Class1)[[".estimate"]],
     roc_val
   )
   expect_equal(
-    roc_auc(two_class_example, truth = "truth", starts_with("Class")),
+    roc_auc(two_class_example, truth = "truth", Class2)[[".estimate"]],
     roc_val
   )
   expect_equal(
-    roc_auc(two_class_example, truth = "truth", Class2),
-    roc_val
-  )
-  expect_equal(
-    roc_auc(two_class_example, truth, Class1, options = list(smooth = TRUE)),
+    roc_auc(two_class_example, truth, Class1, options = list(smooth = TRUE))[[".estimate"]],
     as.numeric(smooth_curv$auc),
     tol = 0.001
   )
@@ -313,18 +310,38 @@ test_that('ROC Curve', {
   )
 })
 
-pr_val <-
-  MLmetrics::PRAUC(two_class_example$Class1,
-                   ifelse(two_class_example$truth == lvls[1], 1, 0))
+# from:
+# MLmetrics::PRAUC(two_class_example$Class1,
+#                  ifelse(two_class_example$truth == lvls[1], 1, 0))
+pr_val <- 0.942570731650901
 
-test_that('PR Curve', {
+test_that('PR AUC', {
   expect_equal(
-    pr_auc(two_class_example, truth = "truth", !! lvls),
+    pr_auc(two_class_example, truth = "truth", "Class1")[[".estimate"]],
     pr_val
   )
   expect_equal(
-    pr_auc(two_class_example, truth,  Class1),
+    pr_auc(two_class_example, truth,  Class1)[[".estimate"]],
     pr_val
+  )
+})
+
+# Known PR Curve result
+pr_example <- data.frame(
+  lab   = factor(c("Yes", "Yes", "No", "Yes"), levels = c("Yes", "No")),
+  score = c(.9, .4, .35, .7)
+)
+
+pr_result <- list(
+  threshold = c(Inf, 0.9, 0.7, 0.4, 0.35),
+  recall = c(0, 1/3, 2/3, 1, 1),
+  precision = c(NA, 1, 1, 1, 0.75)
+)
+
+test_that('PR Curve', {
+  expect_equal(
+    as.list(pr_curve(pr_example, truth = "lab", "score")),
+    pr_result
   )
 })
 
@@ -346,32 +363,41 @@ test_that('LogLoss', {
   )
 })
 
+x <- c(1, 1.2, 1.6, 2)
+y <- c(4, 3.8, 4.2, 5)
+# MLmetrics::Area_Under_Curve(x, y, "trapezoid")
+auc_known <- 4.22
+
+test_that('AUC', {
+  expect_equal(auc(x, y), auc_known)
+})
+
 ###################################################################
 
 test_that('switch event definition', {
   options(yardstick.event_first = FALSE)
   expect_equal(
-    sens(pathology, truth = "pathology", estimate = "scan"),
+    sens(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     54/86
   )
   expect_equal(
-    sens(path_tbl),
+    sens(path_tbl)[[".estimate"]],
     54/86
   )
   expect_equal(
-    spec(pathology, truth = "pathology", estimate = "scan"),
+    spec(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     231/258
   )
   expect_equal(
-    spec(path_tbl),
+    spec(path_tbl)[[".estimate"]],
     231/258
   )
   expect_equal(
-    j_index(pathology, truth = "pathology", estimate = "scan"),
+    j_index(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     (231/258) + (54/86)  - 1
   )
   expect_equal(
-    mcc(pathology, truth = "pathology", estimate = "scan"),
+    mcc(pathology, truth = "pathology", estimate = "scan")[[".estimate"]],
     ((231 * 54) - (32 * 27)) / sqrt((231 + 32)*(231 + 27) * (54 + 32) * (54 + 27))
   )
 })
@@ -382,5 +408,4 @@ test_that('bad args', {
   expect_error(sens(pathology, truth = pathology$pathology, estimate = pathology$scan))
   expect_error(sens(pathology, truth = "pathology", estimate = c("scan", "scan")))
   expect_error(sens(pathology, truth = "patholosgy", estimate = "scan"))
-
 })
