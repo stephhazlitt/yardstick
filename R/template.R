@@ -37,6 +37,9 @@ handle_chr_names <- function(x) {
 metric_vec_template <- function(metric_impl, truth, estimate,
                                 na.rm = TRUE, cls = "numeric", ...) {
 
+  # special handling of class_pred objects
+  estimate <- factorize_class_pred(estimate)
+
   validate_truth_estimate_checks(truth, estimate, cls)
 
   if (na.rm) {
@@ -92,4 +95,21 @@ validate_truth_estimate_checks <- function(truth, estimate, cls = "numeric") {
   validate_truth_estimate_lengths(truth, estimate)
   validate_class(truth, "truth", truth_cls)
   validate_class(estimate, "estimate", estimate_cls)
+}
+
+factorize_class_pred <- function(x) {
+  if(inherits(x, "class_pred")) {
+
+    if(requireNamespace("probably", quietly = TRUE)) {
+      x <- as.factor(x)
+    } else {
+      stop(
+        "`class_pred` objects require the `probably` package.",
+        call. = FALSE
+      )
+    }
+
+  }
+
+  x
 }
