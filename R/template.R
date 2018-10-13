@@ -101,7 +101,7 @@ factorize_class_pred <- function(x) {
   if(inherits(x, "class_pred")) {
 
     if(requireNamespace("probably", quietly = TRUE)) {
-      x <- as.factor(x)
+      x <- probably::as.factor(x)
     } else {
       stop(
         "`class_pred` objects require the `probably` package.",
